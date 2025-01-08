@@ -43,6 +43,7 @@ function Home() {
           <p>Market Cap</p>
         </div>
 
+
         {/* Example Rows (Add dynamic rows here later) */}
         {[1, 2, 3].map((index) => (
           <div

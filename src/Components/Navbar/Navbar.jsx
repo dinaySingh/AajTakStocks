@@ -1,9 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IoIosLogIn } from "react-icons/io";
 
 import logo from "../../assets/AajTakStocks.jpg";
+import { CoinContext } from "../../context/CoinContext";
 
 function Navbar() {
+
+const {setCurrency} = useContext(CoinContext)
+
+const currencyHandler = (e) => {
+switch (e.target.value){
+  case "usd": {
+    setCurrency({name:"usd", symbol: "$"})
+    break;
+  }
+  case "eur": {
+    setCurrency({name:"eur", symbol: "€"})
+    break;
+  }
+  case "inr": {
+    setCurrency({name:"inr", symbol: "₹"})
+    break;
+  }
+  default : {
+    setCurrency({name:"usd", symbol: "$"})
+    break;
+  }
+}
+}
+
   return (
     <div className="px-6 py-4 flex items-center justify-between bg-[#1a1a2e] text-white border-b border-gray-700">
       {/* Logo */}
@@ -20,7 +45,9 @@ function Navbar() {
       {/* Actions */}
       <div className="flex items-center gap-4">
         {/* Currency Selector */}
-        <select className="p-2 bg-[#0f3460] text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
+        <select 
+        onChange={currencyHandler}
+        className="p-2 bg-[#0f3460] text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
           <option value="usd">USD</option>
           <option value="eur">EUR</option>
           <option value="inr">INR</option>
