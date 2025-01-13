@@ -5,6 +5,22 @@ function Home() {
   const { allCoin, currency } = useContext(CoinContext);
   const [displayCoin, SetDisplayCoin] = useState([]);
 
+  const [input, setInput] = useState("");
+  const inputHandler = (e) => {
+    setInput(e.target.value);
+    if(e.target.value === ""){
+      SetDisplayCoin(allCoin)
+    }
+  };
+
+  const searchHandler = async (e) => {
+    e.preventDefault();
+    const coins = await allCoin.filter((i) => {
+      return i.name.toLowerCase().includes(input.toLowerCase());
+    });
+    SetDisplayCoin(coins);
+  };
+
   useEffect(() => {
     SetDisplayCoin(allCoin);
   }, [allCoin]);
@@ -22,12 +38,22 @@ function Home() {
           Explore real-time insights and expert tools to stay ahead in the
           market!
         </p>
-        <form className="flex w-full sm:w-[75%] bg-white text-black rounded-lg overflow-hidden shadow-md">
+        <form
+          onSubmit={searchHandler}
+          className="flex w-full sm:w-[75%] bg-white text-black rounded-lg overflow-hidden shadow-md"
+        >
           <input
+            onChange={inputHandler}
+            list="CoinList"
+            value={input}
             className="flex-1 p-3 text-base border-none outline-none placeholder-gray-500"
             type="text"
             placeholder="Search Crypto..."
+            required
           />
+          <datalist id="CoinList">
+{allCoin.map((item,index)=>(<option key={index} value={item.name}/>))
+}          </datalist>
           <button
             className="m-2 rounded-md px-6 py-3 bg-[#35B2BF] text-white font-medium hover:bg-[#216a72] transition-all"
             type="submit"
@@ -38,47 +64,47 @@ function Home() {
       </div>
 
       <div className="max-w-screen-xl mx-auto mt-16 bg-gradient-to-b from-[#1f2937] to-[#0f172a] rounded-lg shadow-lg">
-  {/* Table Header */}
-  <div className="grid grid-cols-[50px,1fr,1fr,1fr,1fr] px-6 py-4 font-semibold text-lg text-white border-b border-gray-700">
-    <p>#</p>
-    <p>Coin</p>
-    <p>Price</p>
-    <p>24H Change</p>
-    <p>Market Cap</p>
-  </div>
+        {/* Table Header */}
+        <div className="grid grid-cols-[50px,1fr,1fr,1fr,1fr] px-6 py-4 font-semibold text-lg text-white border-b border-gray-700">
+          <p>#</p>
+          <p>Coin</p>
+          <p>Price</p>
+          <p>24H Change</p>
+          <p>Market Cap</p>
+        </div>
 
-  {/* Table Rows */}
-  {displayCoin.slice(0, 10).map((item, index) => (
-    <div
-      key={index}
-      className="grid grid-cols-[50px,1fr,1fr,1fr,1fr] px-6 py-4 items-center text-base sm:text-lg text-gray-300 border-b border-gray-700 hover:bg-[#111827] transition-all last:border-none"
-    >
-      <p>{item.market_cap_rank}</p>
-      <div className="flex items-center gap-3">
-        <img className="w-10 h-10 rounded-full" src={item.image} alt="" />
-        <p>
-          {item.name} <span className="uppercase text-gray-400">({item.symbol})</span>
-        </p>
+        {/* Table Rows */}
+        {displayCoin.slice(0, 10).map((item, index) => (
+          <div
+            key={index}
+            className="grid grid-cols-[50px,1fr,1fr,1fr,1fr] px-6 py-4 items-center text-base sm:text-lg text-gray-300 border-b border-gray-700 hover:bg-[#111827] transition-all last:border-none"
+          >
+            <p>{item.market_cap_rank}</p>
+            <div className="flex items-center gap-3">
+              <img className="w-10 h-10 rounded-full" src={item.image} alt="" />
+              <p>
+                {item.name}{" "}
+                <span className="uppercase text-gray-400">({item.symbol})</span>
+              </p>
+            </div>
+            <p>
+              {currency.symbol} {item.current_price.toLocaleString()}
+            </p>
+            <p
+              className={
+                item.price_change_percentage_24h >= 0
+                  ? "text-green-400"
+                  : "text-red-400"
+              }
+            >
+              {Math.floor(item.price_change_percentage_24h * 100) / 100}%
+            </p>
+            <p>
+              {currency.symbol} {item.market_cap.toLocaleString()}
+            </p>
+          </div>
+        ))}
       </div>
-      <p>
-        {currency.symbol} {item.current_price.toLocaleString()}
-      </p>
-      <p
-        className={
-          item.price_change_percentage_24h >= 0
-            ? "text-green-400"
-            : "text-red-400"
-        }
-      >
-        {Math.floor(item.price_change_percentage_24h * 100) / 100}%
-      </p>
-      <p>
-        {currency.symbol} {item.market_cap.toLocaleString()}
-      </p>
-    </div>
-  ))}
-</div>
-
     </div>
   );
 }
