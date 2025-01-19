@@ -29,10 +29,7 @@ const contextValue = {
     allCoin,currency,setCurrency
 }
 
-
-
-
-  return (
+return (
     <CoinContext.Provider value={contextValue}>
       {props.children}
     </CoinContext.Provider>

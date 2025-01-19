@@ -3,6 +3,7 @@ import { IoIosLogIn } from "react-icons/io";
 
 import logo from "../../assets/CryptoOrbit.jpg";
 import { CoinContext } from "../../context/CoinContext";
+import { Link } from "react-router-dom";
 
 function Navbar() {
 
@@ -30,13 +31,16 @@ switch (e.target.value){
 }
 
   return (
-    <div className="px-6 py-4 flex items-center justify-between bg-[#1a1a2e] text-white border-b border-gray-700">
+    <div 
+    className="px-6 py-4 flex items-center justify-between bg-[#1a1a2e] text-white border-b border-gray-700">
       {/* Logo */}
+      <Link to={`/`}>
       <img src={logo} alt="Logo" className="h-16 w-auto rounded-full" />
+      </Link>
 
       {/* Navigation Links */}
       <ul className="hidden md:flex items-center gap-24 text-lg font-medium">
-        <li className="hover:text-[#489DAF] hover:underline transition-colors duration-300 cursor-pointer">Home</li>
+       <Link to={`/`}> <li className="hover:text-[#489DAF] hover:underline transition-colors duration-300 cursor-pointer">Home</li> </Link>
         <li className="hover:text-[#489DAF] hover:underline transition-colors duration-300 cursor-pointer">Features</li>
         <li className="hover:text-[#489DAF] hover:underline transition-colors duration-300 cursor-pointer">Pricing</li>
         <li className="hover:text-[#489DAF] hover:underline transition-colors duration-300 cursor-pointer">Blog</li>

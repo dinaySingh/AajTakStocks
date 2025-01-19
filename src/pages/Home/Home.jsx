@@ -1,15 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CoinContext } from "../../context/CoinContext";
+import { Link } from "react-router-dom";
+
 
 function Home() {
   const { allCoin, currency } = useContext(CoinContext);
   const [displayCoin, SetDisplayCoin] = useState([]);
 
   const [input, setInput] = useState("");
+
+  // We have added condition if we write something in input box then show that value or else if its blank show all coin 
   const inputHandler = (e) => {
     setInput(e.target.value);
-    if(e.target.value === ""){
-      SetDisplayCoin(allCoin)
+
+    if (e.target.value === "") {
+      SetDisplayCoin(allCoin);
     }
   };
 
@@ -52,8 +57,10 @@ function Home() {
             required
           />
           <datalist id="CoinList">
-{allCoin.map((item,index)=>(<option key={index} value={item.name}/>))
-}          </datalist>
+            {allCoin.map((item, index) => (
+              <option key={index} value={item.name} />
+            ))}{" "}
+          </datalist>
           <button
             className="m-2 rounded-md px-6 py-3 bg-[#35B2BF] text-white font-medium hover:bg-[#216a72] transition-all"
             type="submit"
@@ -75,7 +82,8 @@ function Home() {
 
         {/* Table Rows */}
         {displayCoin.slice(0, 10).map((item, index) => (
-          <div
+          <Link
+          to={`/coin/${item.id}`}
             key={index}
             className="grid grid-cols-[50px,1fr,1fr,1fr,1fr] px-6 py-4 items-center text-base sm:text-lg text-gray-300 border-b border-gray-700 hover:bg-[#111827] transition-all last:border-none"
           >
@@ -102,7 +110,7 @@ function Home() {
             <p>
               {currency.symbol} {item.market_cap.toLocaleString()}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
